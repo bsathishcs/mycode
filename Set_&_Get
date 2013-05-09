@@ -1,0 +1,34 @@
+import com.couchbase.client.CouchbaseClient;
+import java.net.URI;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import com.couchbase.client.CouchbaseClient;
+
+import net.spy.memcached.CASValue;
+import net.spy.memcached.internal.GetFuture;
+import net.spy.memcached.internal.OperationFuture;
+import java.util.ArrayList;
+
+public class hello{
+ public static void main(String[] args){
+ArrayList<URI> nodes = new ArrayList<URI>();
+
+nodes.add(URI.create("http://ec2-54-241-197-135.us-west-1.compute.amazonaws.com:8091/pools"));
+CouchbaseClient client = null;
+try
+{client = new CouchbaseClient(nodes,"default","");
+}
+catch (Exception e){
+System.err.println("Error Connecting to the database");
+System.exit(1);
+}
+int timeout = 0;
+client.set("hello",timeout,"couchbase");
+String result=(String)client.get("hello");
+System.out.println(result);
+client.shutdown();
+}
+}
