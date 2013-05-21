@@ -1,0 +1,417 @@
+Sub Test()
+'
+' Macro2 Macro
+'
+
+'
+     Dim strAddress As String
+     strAddress = Application.InputBox(Prompt:="Enter the cells Range", Title:="Couchbase India Support Team", Type:=2)
+     Dim buck_no As Integer
+     buck_no = Application.InputBox(Prompt:="Enter Number of Buckets", Title:="Couchbase India Support Team") + 1
+     
+     Dim host As String
+     host = Worksheets("Sheet1").Range("$B$2").Value
+     'Sheets.Add
+        Sheets.Add.Name = "Sheet5"
+        ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+       "Sheet1!R1C1:R" & strAddress & "C5", Version:=xlPivotTableVersion12).CreatePivotTable _
+        TableDestination:="Sheet5" & "!R3C1", TableName:="PivotTable3", DefaultVersion _
+        :=xlPivotTableVersion12
+        Sheets("Sheet1").Select
+        Columns("C:C").Select
+        Selection.Copy
+        Sheets.Add.Name = "sort"
+        Sheets("sort").Select
+        Columns("A:A").Select
+        ActiveSheet.Paste
+        ActiveWindow.SmallScroll Down:=-15
+        Application.CutCopyMode = False
+        ActiveSheet.Range("$A$1:$A$" & strAddress).RemoveDuplicates Columns:=1, Header:=xlYes
+        Dim NewRow(1 To 25) As String
+        For i = 1 To buck_no
+        NewRow(i) = Worksheets("sort").Range("$A$" & i).Value
+        'MsgBox NewRow(i)
+    Next
+    Sheets("Sheet5").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("DATE")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("HOST")
+        .Orientation = xlPageField
+        .Position = 1
+    End With
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("BUCKET_NAME")
+        .Orientation = xlPageField
+        .Position = 1
+    End With
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable3").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable3").PivotFields("VALUE"), "Sum of VALUE", xlSum
+    Range("A4:AA1000").Select
+    ActiveSheet.Shapes.AddChart.Select
+    ActiveChart.SetSourceData Source:=Range("Sheet5!$A$4:$AA$1000")
+    ActiveWorkbook.ShowPivotChartActiveFields = True
+    ActiveChart.ChartType = xlLine
+    ActiveSheet.PivotTables("PivotTable3").PivotFields("HOST").ClearAllFilters
+    ActiveSheet.PivotTables("PivotTable3").PivotFields("HOST").CurrentPage = _
+        host
+  For i = 2 To buck_no
+           ActiveSheet.PivotTables("PivotTable3").PivotFields("BUCKET_NAME"). _
+        ClearAllFilters
+          ActiveSheet.PivotTables("PivotTable3").PivotFields("BUCKET_NAME").CurrentPage _
+        = NewRow(i)
+         With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+        .PivotItems("mem_used").Visible = False
+        .PivotItems("curr_items").Visible = False
+        .PivotItems("curr_items_tot").Visible = False
+        .PivotItems("ep_diskqueue_fill").Visible = False
+        .PivotItems("ep_diskqueue_items").Visible = False
+        .PivotItems("ep_diskqueue_memory").Visible = False
+        .PivotItems("ep_flusher_todo").Visible = False
+        .PivotItems("ep_io_num_read").Visible = False
+        .PivotItems("ep_io_num_write").Visible = False
+        .PivotItems("ep_io_read_bytes").Visible = False
+        .PivotItems("ep_io_write_bytes").Visible = False
+        .PivotItems("ep_kv_size").Visible = False
+        .PivotItems("ep_num_non_resident").Visible = False
+        .PivotItems("ep_num_value_ejects").Visible = False
+        .PivotItems("ep_queue_size").Visible = False
+        .PivotItems("ep_tmp_oom_errors").Visible = False
+        .PivotItems("ep_total_enqueued").Visible = False
+        .PivotItems("ep_value_size").Visible = False
+        .PivotItems("vb_active_curr_items").Visible = False
+        .PivotItems("vb_active_eject").Visible = False
+        .PivotItems("vb_active_itm_memory").Visible = False
+        .PivotItems("vb_active_num_non_resident").Visible = False
+        .PivotItems("vb_active_perc_mem_resident").Visible = False
+        .PivotItems("vb_replica_curr_items").Visible = False
+        .PivotItems("vb_replica_itm_memory").Visible = False
+        .PivotItems("vb_replica_num_non_resident").Visible = False
+        .PivotItems("vb_replica_perc_mem_resident").Visible = False
+        .PivotItems("vb_pending_curr_items").Visible = False
+    End With
+     ActiveChart.ChartArea.Copy
+    Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+        .PivotItems("mem_used").Visible = True
+        .PivotItems("ep_diskqueue_drain").Visible = False
+        
+    End With
+     ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+        .PivotItems("curr_items").Visible = True
+        .PivotItems("mem_used").Visible = False
+        
+    End With
+     ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+        .PivotItems("curr_items_tot").Visible = True
+        .PivotItems("curr_items").Visible = False
+        
+    End With
+    ActiveChart.ChartArea.Copy
+   ' Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+        .PivotItems("ep_diskqueue_fill").Visible = True
+        .PivotItems("curr_items_tot").Visible = False
+        
+    End With
+    ActiveChart.ChartArea.Copy
+    Sheets(NewRow(i)).Select
+    Range("I1").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+        .PivotItems("ep_diskqueue_items").Visible = True
+        .PivotItems("ep_diskqueue_fill").Visible = False
+        
+    End With
+    ActiveChart.ChartArea.Copy
+     'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("Q1").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+        .PivotItems("ep_diskqueue_memory").Visible = True
+        .PivotItems("ep_diskqueue_items").Visible = False
+        
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("A17").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+         .PivotItems("ep_flusher_todo").Visible = True
+        .PivotItems("ep_diskqueue_memory").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("I17").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+         .PivotItems("ep_io_num_read").Visible = True
+         .PivotItems("ep_flusher_todo").Visible = False
+         
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("Q17").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+         .PivotItems("ep_io_num_write").Visible = True
+         .PivotItems("ep_io_num_read").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("A34").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+         .PivotItems("ep_io_read_bytes").Visible = True
+         .PivotItems("ep_io_num_write").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("I34").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+         .PivotItems("ep_io_write_bytes").Visible = True
+         .PivotItems("ep_io_read_bytes").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("Q34").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+        .PivotItems("ep_kv_size").Visible = True
+         .PivotItems("ep_io_write_bytes").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("A41").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+         .PivotItems("ep_num_non_resident").Visible = True
+         .PivotItems("ep_kv_size").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("I41").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+         .PivotItems("ep_num_value_ejects").Visible = True
+         .PivotItems("ep_num_non_resident").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("Q41").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+         .PivotItems("ep_queue_size").Visible = True
+         .PivotItems("ep_num_value_ejects").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("A58").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+         .PivotItems("ep_tmp_oom_errors").Visible = True
+         .PivotItems("ep_queue_size").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("I58").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+         .PivotItems("ep_total_enqueued").Visible = True
+         .PivotItems("ep_tmp_oom_errors").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("Q58").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+         .PivotItems("ep_value_size").Visible = True
+         .PivotItems("ep_total_enqueued").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("A65").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+          .PivotItems("vb_active_curr_items").Visible = True
+         .PivotItems("ep_value_size").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("I65").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+           .PivotItems("vb_active_eject").Visible = True
+          .PivotItems("vb_active_curr_items").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("Q65").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+         .PivotItems("vb_active_itm_memory").Visible = True
+         .PivotItems("vb_active_eject").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("A82").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+        .PivotItems("vb_active_num_non_resident").Visible = True
+         .PivotItems("vb_active_itm_memory").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("I82").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+         .PivotItems("vb_active_perc_mem_resident").Visible = True
+         .PivotItems("vb_active_num_non_resident").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("Q82").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+          .PivotItems("vb_replica_curr_items").Visible = True
+         .PivotItems("vb_active_perc_mem_resident").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("A99").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+          .PivotItems("vb_replica_itm_memory").Visible = True
+          .PivotItems("vb_replica_curr_items").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("I99").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+     Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+          .PivotItems("vb_replica_num_non_resident").Visible = True
+         .PivotItems("vb_replica_itm_memory").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("Q99").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+     Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+           .PivotItems("vb_replica_perc_mem_resident").Visible = True
+           .PivotItems("vb_replica_num_non_resident").Visible = False
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    With ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG")
+        .PivotItems("vb_pending_curr_items").Visible = True
+        .PivotItems("vb_replica_perc_mem_resident").Visible = False
+        
+    End With
+    ActiveChart.ChartArea.Copy
+    'Sheets.Add.Name = NewRow(i)
+    Sheets(NewRow(i)).Select
+    Range("A116").Select
+    ActiveSheet.PasteSpecial Format:="Picture (JPEG)", Link:=False, _
+        DisplayAsIcon:=False
+    Sheets("Sheet5").Select
+    ActiveSheet.PivotTables("PivotTable3").PivotFields("FLAG").ClearAllFilters
+    Next
+End Sub
