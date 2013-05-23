@@ -1,0 +1,27 @@
+   
+   *Download the packages and extract*
+   wget http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.16/bin/apache-tomcat-7.0.16.tar.gz
+   tar -xvf apache-tomcat-7.0.16.tar.gz
+   
+   * move the copied file to location*
+   
+   mv apache-tomcat-7.0.16 /usr/tomcat7
+   useradd -d /usr/tomcat7 tomcat
+   chown -R tomcat /usr/tomcat7
+   
+   vi /etc/rc.d/init.d/tomcat7
+   chmod 755 /etc/rc.d/init.d/tomcat7
+   /etc/rc.d/init.d/tomcat7 start
+   
+   chkconfig --add tomcat7
+   chkconfig tomcat7 on
+   
+   mkdir /usr/tomcat7/webapps/ROOT/WEB-INF/classes
+   chown tomcat /usr/tomcat7/webapps/ROOT/WEB-INF/classes
+   cd /usr/tomcat7/webapps/ROOT/WEB-INF/classes
+  
+  
+   vi daytime.java
+   javac -classpath /usr/tomcat7/lib/servlet-api.jar daytime.java
+   vi /usr/tomcat7/webapps/ROOT/WEB-INF/web.xml
+   service tomcat7 restart
