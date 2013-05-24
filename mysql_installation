@@ -1,0 +1,18 @@
+Download the rpm packages:
+
+MySQL-client-community-5.1.25-0.rhel5.i386.rpm
+MySQL-server-community-5.1.25-0.rhel5.i386.rpm
+MySQL-devel-community-5.1.25-0.rhel5.i386.rpm
+
+url to download the packages:
+
+http://mirrors.ukfast.co.uk/sites/ftp.mysql.com/Downloads/MySQL-5.1/
+
+Start the service :
+
+/etc/init.d/mysql start
+
+(refer this site:https://sites.google.com/site/radienallienz/linux/howto-install-mysql-on-linux)
+
+>mysql
+
