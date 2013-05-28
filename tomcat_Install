@@ -8,8 +8,89 @@
    mv apache-tomcat-7.0.16 /usr/tomcat7
    useradd -d /usr/tomcat7 tomcat
    chown -R tomcat /usr/tomcat7
-   
+----   
    vi /etc/rc.d/init.d/tomcat7
+#!/bin/bash
+#
+# chkconfig: - 90 10
+# description: Tomcat 6 - Java apprication server
+
+. /etc/init.d/functions
+
+JAVA=/usr/java/default
+CATALINA_HOME=/usr/tomcat6
+TOMCAT_USER=tomcat
+TMP_DIR=/tmp
+CATALINA_OPTS=
+CLASSPATH=\
+$JAVA/lib/tools.jar:\
+$CATALINA_HOME/bin/commons-daemon.jar:\
+$CATALINA_HOME/bin/bootstrap.jar
+PIDFILE=/var/run/tomcat.pid
+LOCKFILE=/var/lock/subsys/tomcat
+DAEMON=/bin/jsvc
+
+start(){
+    echo -n "Starting jsvc: "
+    $DAEMON \
+    -pidfile $PIDFILE \
+    -user $TOMCAT_USER \
+    -home $JAVA \
+    -Dcatalina.home=$CATALINA_HOME \
+    -Djava.io.tmpdir=$TMP_DIR \
+    -outfile $CATALINA_HOME/logs/catalina.out \
+    -errfile '&1' \
+    $CATALINA_OPTS \
+    -cp $CLASSPATH \
+    org.apache.catalina.startup.Bootstrap
+
+    RETVAL=$?
+    if [ $RETVAL = 0 ]; then
+       echo_success
+       touch $LOCKFILE
+    else
+       echo_failure
+    fi
+    echo
+}
+
+stop(){
+    echo -n "Shutting down jsvc: "
+    $DAEMON \
+    -stop \
+    -pidfile $PIDFILE
+    org.apache.catalina.startup.Bootstrap
+    RETVAL=$?
+    if [ $RETVAL = 0 ]; then
+       echo_success
+       rm -f $PIDFILE $LOCKFILE
+    else
+       echo_failure
+    fi
+    echo
+}
+
+case "$1" in
+    start)
+       start
+       ;;
+    stop)
+       stop
+       ;;
+    restart)
+       stop
+       start
+       ;;
+    status)
+       status $DAEMON
+       RETVAL=$?
+       ;;
+    *)
+       echo $"Usage: jsvc {start|stop|restart|status}"
+       exit 1
+       ;;
+esac
+------
    chmod 755 /etc/rc.d/init.d/tomcat7
    /etc/rc.d/init.d/tomcat7 start
    
