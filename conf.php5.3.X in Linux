@@ -3,7 +3,7 @@ a) Install Apache and PHP If you want to upgrade to th latest version of the PHP
    
    rpm -Uvh http://mirror.webtatic.com/yum/centos/5/latest.rpm
    Now you can install php by doing:
-   yum --enablerepo=webtatic install php php-pear php-mbstring
+   yum --enablerepo=webtatic install php php-pear php-mbstring php-devel
    
 b) Edit the /etc/httpd/conf/httpd.conf to include the AddType and LoadModule to include the php.so
 c) Make sure that the C Client dependency is installed by running before running pecl.
