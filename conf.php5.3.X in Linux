@@ -1,0 +1,18 @@
+a) Install Apache and PHP If you want to upgrade to th latest version of the PHP, do a yum list and see if it has the latest version, if not please update the repository to webtatic. For pecl to work, you need to install php-pear
+   yum install httpd php php-pear php-mbstring - Check if the installed files are latest by looking at the versions. If not run the below one's to see the versions and then hit "y" to continue
+   
+   rpm -Uvh http://mirror.webtatic.com/yum/centos/5/latest.rpm
+   Now you can install php by doing:
+   yum --enablerepo=webtatic install php php-pear php-mbstring
+   
+b) Edit the /etc/httpd/conf/httpd.conf to include the AddType and LoadModule to include the php.so
+c) Make sure that the C Client dependency is installed by running before running pecl.
+    sudo wget -O/etc/yum.repos.d/couchbase.repo http://packages.couchbase.com/rpm/couchbase-centos55-x86_64.repo
+    sudo yum check-update
+    sudo yum install -y libcouchbase2 libcouchbase-devel
+d) Edit the php.ini to include the couchbase.so. Make sure that the dependencies are included first example json.so is a dependent for couchbase.so . Make sure to have the extension_dir and extension directives set
+e) Any changes made to httpd.conf, service needs a restart.
+e) Check the sample PHP code by putting in /var/www/html/Sample by calling https://localhost/Sample/sample.php
+   <?php
+   phpinfo();
+   ?>
