@@ -1,0 +1,30 @@
+#!/usr/bin/perl -w
+print "\t\t\t\t<---- Installation of Tomcat ------->";
+system("cd /");
+!system("wget http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.16/bin/apache-tomcat-7.0.16.tar.gz") or die "Could not download the package\n";
+!system("tar -xvf apache-tomcat-7.0.16.tar.gz")or die "Cannot extact the package";
+
+!system("mv apache-tomcat-7.0.16 /usr/tomcat7")or die "Cannot move the package";
+
+!system("useradd -d /usr/tomcat7 tomcat")or die "Cannot add user";
+
+system("chown -R tomcat /usr/tomcat7");
+open (fo,"<","input.txt") or die "Cannot open input file";
+open (fw,">","tomcat7") or die "Cannot open file for writing";
+while(<fo>)
+{
+ print fw $_;
+}
+system("mv tomcat7 /etc/rc.d/init.d/tomcat7");
+system("chmod 755 /etc/rc.d/init.d/tomcat7");
+
+system ("/etc/rc.d/init.d/tomcat7 start");
+sleep(6);
+
+system("mkdir -p /usr/tomcat7/webapps/newproject");
+
+system("mkdir /usr/tomcat7/webapps/newproject/lib");
+
+system("mkdir /usr/tomcat7/webapps/newproject/classes");
+
+system("chown tomcat /usr/tomcat7/webapps/newproject/classes");
