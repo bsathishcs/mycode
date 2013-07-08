@@ -1,0 +1,25 @@
+#!/usr/bin/perl -w
+use strict;
+print "\t\t Enter the SDK name \n";
+print "\tJava\tphp\n";
+my $choice = <STDIN>;
+chomp($choice);
+if($choice eq "Java" || $choice eq "java" || $choice eq "JAVA")
+{
+system("mkdir /root/project_1/");
+system("cd /root/project_1/");
+system("wget http://packages.couchbase.com/clients/java/1.1.7/Couchbase-Java-Client-1.1.7.zip");
+system("unzip Couchbase-Java-Client-1.1.7.zip");
+}
+else{
+system("cd ~");
+system("rpm -Uvh http://mirror.webtatic.com/yum/centos/5/latest.rpm");
+system("yum --enablerepo=webtatic install php php-pear php-mbstring php-devel -y");
+system(" sudo wget -O/etc/yum.repos.d/couchbase.repo http://packages.couchbase.com/rpm/couchbase-centos55-x86_64.repo");
+system("sudo yum check-update");
+system("sudo yum install -y libcouchbase2 libcouchbase-devel");
+system("yum install httpd -y");
+system("service httpd restart");
+system("sudo pecl install couchbase");
+
+}
