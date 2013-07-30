@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 print "\t\t\t\t<---- Installation of Tomcat ------->";
-system("cd /");
+
 !system("wget http://archive.apache.org/dist/tomcat/tomcat-7/v7.0.16/bin/apache-tomcat-7.0.16.tar.gz") or die "Could not download the package\n";
 !system("tar -xvf apache-tomcat-7.0.16.tar.gz")or die "Cannot extact the package";
 
@@ -23,8 +23,3 @@ sleep(6);
 
 system("mkdir -p /usr/tomcat7/webapps/newproject");
 
-system("mkdir /usr/tomcat7/webapps/newproject/lib");
-
-system("mkdir /usr/tomcat7/webapps/newproject/classes");
-
-system("chown tomcat /usr/tomcat7/webapps/newproject/classes");
