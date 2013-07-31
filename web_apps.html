@@ -1,0 +1,94 @@
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script>
+  $(function() {
+    $( "#datepicker" ).datepicker();
+  });
+  </script>
+</head>
+<body>
+
+<h2><center>Enter your Details below</center></h2>
+<center><table border="1">
+<form method="post" action="Couch">
+<tr >
+<td>Name:</td>
+<td><input type="Textbox" name="textbox"></td>
+</tr>
+<tr >
+<td>E-mail id:</td>
+<td><input type="Textbox" value="abc@yahoo.com" name="email"></td>
+</tr>
+<tr >
+<td>Date of birth:</td>
+<td><input type="text" name ="date" id="datepicker"></td>
+</tr>
+<tr >
+<td>Degree:</td>
+<td><select name="degree" "id="degree">
+   <option value="None">-- Select --</option>
+   <option value="be/btech">BE/B.TECH/B.S</option>
+   <option value="me/mtech">M.E/M.TECH/M.C.A/M.S</option>
+</select></td>
+</tr>
+ <tr >
+<td>Stream:</td>
+<td><select name="stream" id="stream">
+   <option value="None">-- Select --</option>
+   <option value="cse">CSE</option>
+   <option value="it">IT</option>
+     <option value="nonit">Non-IT</option>
+</select></td>
+</tr>
+<tr >
+<td>Programming languages known:</td>
+<td><input type="text" name="lang"></td>
+</tr>
+<tr >
+<td>Databases known:</td>
+<td><input type="text" name="db"></td>
+</tr>
+<tr >
+<td>Other Skill Set:</td>
+<td><input type="text" name="skill"></td>
+</tr>
+<tr >
+<td>Overall Experience (in months):</td>
+<td><input type="text" name="totalexp"></td>
+</tr>
+<tr >
+<td>Relevant Experience (in months):</td>
+<td><input type="text" name="relexp"></td>
+</tr>
+<tr >
+<td rowspan="20">Companies worked:</td>
+<td>Company name:<input type="text" name="cname"></td>
+</tr>
+<tr>
+<td>Months worked:<input type="text" name="mwork"></td>
+</tr>
+<tr>
+<td>Designation:<input type="text" name="desig"></td>
+</tr>
+<tr>
+<td>Roles and Responsibility:<input type="textarea" name="randr"></td>
+</tr>
+
+
+
+
+</table><br/>
+<font color="red">Select from drop down if you want to run Views</font>
+<select name="sk">
+  <option value="Select">Select</option>
+  <option value="Nosql">NoSQL</option>
+  <option value="perl">PERL</option>
+  <option value="mysql">MySQL</option>
+  <option value="java">Java</option>
+</select>
+ <center><input type="submit" value="Submit"></center>
+</center>
+</body>
+</html>
